@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stylish Calculator - CodeAlpha</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: url("https://picsum.photos/id/1018/1600/900") no-repeat center center/cover;
+    }
+
+    .calculator {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  padding: 20px; /* reduced to match button spacing */
+  border-radius: 20px;
+  box-shadow: 0px 8px 30px rgba(0,0,0,0.3);
+  width: 360px; /* slightly wider to fit grid */
+  border: 1px solid rgba(255,255,255,0.2);
+  box-sizing: border-box; /* ensures padding doesn’t break width */
+}
+
+.display {
+  width: 100%;  /* takes full calculator width */
+  height: 70px;
+  text-align: right;
+  font-size: 2rem;
+  padding: 10px 15px; /* balanced padding */
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #000000;
+  margin-bottom: 15px; /* reduced to tighten spacing with buttons */
+  box-shadow: inset 0px 4px 8px rgba(0,0,0,0.2);
+  box-sizing: border-box;
+}
+
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+      gap: 12px;
+    }
+
+    button {
+      height: 65px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #fff;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center; /* center text perfectly */
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn-number {
+      background: linear-gradient(145deg, #434343, #000000);
+    }
+
+    .btn-operator {
+      background: linear-gradient(145deg, #0077ff, #0056cc);
+    }
+
+    .btn-clear {
+      background: linear-gradient(145deg, #ff416c, #ff4b2b);
+    }
+
+    .btn-equal {
+      background: linear-gradient(145deg, #00c851, #009432);
+      grid-column: span 4; /* Full row */
+      height: 70px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" class="display" id="display" disabled>
+    <div class="buttons">
+      <button class="btn-clear" onclick="clearDisplay()">C</button>
+      <button class="btn-operator" onclick="appendOperator('/')">÷</button>
+      <button class="btn-operator" onclick="appendOperator('*')">×</button>
+      <button class="btn-operator" onclick="appendOperator('-')">−</button>
+
+      <button class="btn-number" onclick="appendNumber('7')">7</button>
+      <button class="btn-number" onclick="appendNumber('8')">8</button>
+      <button class="btn-number" onclick="appendNumber('9')">9</button>
+      <button class="btn-operator" onclick="appendOperator('+')">+</button>
+
+      <button class="btn-number" onclick="appendNumber('4')">4</button>
+      <button class="btn-number" onclick="appendNumber('5')">5</button>
+      <button class="btn-number" onclick="appendNumber('6')">6</button>
+      <button class="btn-number" onclick="appendNumber('1')">1</button>
+
+      <button class="btn-number" onclick="appendNumber('2')">2</button>
+      <button class="btn-number" onclick="appendNumber('3')">3</button>
+      <button class="btn-number" onclick="appendNumber('0')">0</button>
+      <button class="btn-number" onclick="appendNumber('.')">.</button>
+
+      <!-- Equal button takes full row -->
+      <button class="btn-equal" onclick="calculateResult()">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function appendNumber(num) {
+      display.value += num;
+    }
+
+    function appendOperator(op) {
+      if (display.value === '') return;
+      const lastChar = display.value[display.value.length - 1];
+      if (['+', '-', '*', '/'].includes(lastChar)) return;
+      display.value += op;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function calculateResult() {
+      try {
+        display.value = eval(display.value);
+      } catch {
+        display.value = 'Error';
+      }
+    }
+
+    // ✅ Bonus: Keyboard Support
+    document.addEventListener("keydown", (event) => {
+      if (!isNaN(event.key) || ['+', '-', '*', '/','.'].includes(event.key)) {
+        display.value += event.key;
+      }
+      if (event.key === "Enter") {
+        calculateResult();
+      }
+      if (event.key === "Backspace") {
+        display.value = display.value.slice(0, -1);
+      }
+      if (event.key.toLowerCase() === "c") {
+        clearDisplay();
+      }
+    });
+  </script>
+</body>
+</html>
+
+

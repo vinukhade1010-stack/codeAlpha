@@ -1,2 +1,234 @@
-# codeAlpha
-intership tasks
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Image Gallery - CodeAlpha</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background: #0077ff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    /* Filter Buttons */
+    .filter-buttons {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .filter-buttons button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      background: #0077ff;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .filter-buttons button:hover {
+      background: #0056cc;
+      transform: scale(1.05);
+    }
+
+    /* Gallery Grid */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .gallery-item {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .gallery-item img:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-info {
+      padding: 12px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0px 5px 20px rgba(255,255,255,0.2);
+    }
+
+    .lightbox .close,
+    .lightbox .prev,
+    .lightbox .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 2rem;
+      padding: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .lightbox .close {
+      top: 20px;
+      right: 30px;
+      font-size: 2.5rem;
+    }
+
+    .lightbox .prev { left: 30px; }
+    .lightbox .next { right: 30px; }
+  </style>
+</head>
+<body>
+
+  <header>📸 Modern Image Gallery</header>
+
+  <!-- Filter Buttons -->
+  <div class="filter-buttons">
+    <button onclick="filterImages('all')">All</button>
+    <button onclick="filterImages('nature')">Nature</button>
+    <button onclick="filterImages('city')">City</button>
+    <button onclick="filterImages('animals')">Animals</button>
+  </div>
+
+  <!-- Gallery -->
+  <div class="gallery">
+
+    <!-- Nature (10 Images) -->
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1018/600/400" alt=""><div class="gallery-info">Forest</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1015/600/400" alt=""><div class="gallery-info">River</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1016/600/400" alt=""><div class="gallery-info">Mountain</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1025/600/400" alt=""><div class="gallery-info">Dog in Nature</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1024/600/400" alt=""><div class="gallery-info">Waterfall</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1020/600/400" alt=""><div class="gallery-info">Tree</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1021/600/400" alt=""><div class="gallery-info">Lake</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1022/600/400" alt=""><div class="gallery-info">Flowers</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1023/600/400" alt=""><div class="gallery-info">Field</div></div>
+    <div class="gallery-item" data-category="nature"><img src="https://picsum.photos/id/1027/600/400" alt=""><div class="gallery-info">Sky</div></div>
+
+    <!-- City (10 Images) -->
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1031/600/400" alt=""><div class="gallery-info">City Skyline</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1032/600/400" alt=""><div class="gallery-info">Night Lights</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1033/600/400" alt=""><div class="gallery-info">City Street</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1035/600/400" alt=""><div class="gallery-info">Buildings</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1036/600/400" alt=""><div class="gallery-info">Bridge</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1037/600/400" alt=""><div class="gallery-info">Traffic</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1038/600/400" alt=""><div class="gallery-info">Architecture</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1039/600/400" alt=""><div class="gallery-info">Street View</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1040/600/400" alt=""><div class="gallery-info">Modern City</div></div>
+    <div class="gallery-item" data-category="city"><img src="https://picsum.photos/id/1041/600/400" alt=""><div class="gallery-info">Urban Park</div></div>
+
+    <!-- Animals (10 Images) -->
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1025/600/400" alt=""><div class="gallery-info">Dog</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1074/600/400" alt=""><div class="gallery-info">Cat</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1062/600/400" alt=""><div class="gallery-info">Horse</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1063/600/400" alt=""><div class="gallery-info">Elephant</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1064/600/400" alt=""><div class="gallery-info">Bird</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1065/600/400" alt=""><div class="gallery-info">Tiger</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1066/600/400" alt=""><div class="gallery-info">Wolf</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1067/600/400" alt=""><div class="gallery-info">Lion</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1068/600/400" alt=""><div class="gallery-info">Fox</div></div>
+    <div class="gallery-item" data-category="animals"><img src="https://picsum.photos/id/1069/600/400" alt=""><div class="gallery-info">Panda</div></div>
+
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <span class="close" onclick="closeLightbox()">&times;</span>
+    <span class="prev" onclick="changeImage(-1)">&#10094;</span>
+    <img id="lightbox-img" src="">
+    <span class="next" onclick="changeImage(1)">&#10095;</span>
+  </div>
+
+  <script>
+    const images = document.querySelectorAll('.gallery-item img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    let currentIndex = 0;
+
+    // Open lightbox
+    images.forEach((img, index) => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';
+        lightboxImg.src = img.src;
+        currentIndex = index;
+      });
+    });
+
+    // Close lightbox
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+    }
+
+    // Next/Prev navigation
+    function changeImage(direction) {
+      currentIndex += direction;
+      if (currentIndex < 0) currentIndex = images.length - 1;
+      if (currentIndex >= images.length) currentIndex = 0;
+      lightboxImg.src = images[currentIndex].src;
+    }
+
+    // Filter images
+    function filterImages(category) {
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
